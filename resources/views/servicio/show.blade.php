@@ -5,7 +5,7 @@
 
 
 
-<div class="container">
+<div class="container" style="padding-top: 100px">
     <div class="row">
 
 <div class="col-md-2">
@@ -20,7 +20,7 @@
               <div class="col-md-6">
                 <div class="card-body">
                   <h5 class="card-title">{{$servicio->name}}</h5>
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text">{{ $servicio->descripcion }}</p>
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item">Disponibilidad:  {{$servicio->fechai}}</li>
                     <li class="list-group-item">Culminacion:  {{$servicio->fechac}}</li>
@@ -28,7 +28,24 @@
                     <li class="list-group-item"></li>
                   </ul>
                   <div class="row text-center">
-                    <input type="button" value="Reservar" class="btn btn-success btn-block">
+                    <form method="GET" target="_self" action="../servicio/{{$servicio->slug}}/pdf" style="width:100%"; onsubmit="return pregunta();">
+                        {{ csrf_field() }}
+                        @method('GET')
+
+
+
+                        <div class="form-group">
+
+                            <input  type="submit"  class="btn btn-success btn-md btn-block" value="Reservar">
+
+
+
+
+
+
+
+                        </div>
+                      </form>
                   </div>
                 </div>
               </div>

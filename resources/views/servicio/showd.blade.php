@@ -5,7 +5,7 @@
 
 
 
-<div class="container">
+<div class="container" style="padding-top: 100px">
     <div class="row">
 
 <div class="col-md-2">
@@ -20,7 +20,7 @@
               <div class="col-md-6">
                 <div class="card-body">
                   <h5 class="card-title">{{$servicio->name}}</h5>
-                  <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                  <p class="card-text">{{$servicio->descripcion}}</p>
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item">Disponibilidad: {{$servicio->fechai}}</li>
                     <li class="list-group-item">Culminacion: {{$servicio->fechac}} </li>
@@ -31,12 +31,20 @@
 
                   </div>
                   <div class="row text-center">
-                        <form method="POST" action="../servicio/{{$servicio->slug}}" style="width:100%";>
+                        <form method="POST" target="_self" action="../servicio/{{$servicio->slug}}" style="width:100%"; onsubmit="return pregunta();">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
 
                             <div class="form-group">
-                              <input type="submit" class="btn btn-danger btn-md btn-block" value="Eliminar">
+
+                                <input  type="submit"  class="btn btn-danger btn-md btn-block" value="Eliminar">
+
+
+
+
+
+
+
                             </div>
                           </form>
                   </div>
@@ -50,10 +58,13 @@
     <div class="col-md-2"></div>
 
 
-
-
-
     </div>
 </div>
+<script>
+        function pregunta(){
+            return confirm('¿Estas seguro de que quieres eliminar este registro?');
+            }
+
+</script>
 
 @endsection

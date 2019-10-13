@@ -2,9 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Servicio;
+
+use App\Servicio as Servicio;
 use App\User;
 use Illuminate\Http\Request;
+use Dompdf\Dompdf;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
+use Auth;
+use Illuminate\Support\Facades\Session;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+use Illuminate\Support\Facades\Mail;
+use Queueable, SerializesModels;
+
+use function Opis\Closure\serialize;
 
 class HelpCampController extends Controller
 {
@@ -13,6 +26,106 @@ class HelpCampController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+
+     public function pdff(Request $request,$slug)
+     {
+
+        //$servicio = Servicio::all();
+        //$servicio = Servicio::slug();
+
+        $user = Auth::user();
+        $ser = DB::table('servicios')->where('slug',$slug)->first();
+
+
+
+        $servicio = DB::table('servicios')->where('slug',$slug);
+        $pdf = PDF::loadview('servicio.pdf',compact('user'),compact('ser'));
+        //$pdf->download('servicio.pdf');
+        $output = $pdf->output();
+        $route =   $user->id . time() . '.pdf';
+        file_put_contents( './ServicioPDF/' . $route, $output);
+
+        DB::table('pdfs')->insert(
+            ['ruta' => $route, 'user_id' => $user->id]
+        );
+
+        $servicio = Servicio::find($ser->id);
+
+        $servicio->delete();
+
+
+        $mail = new PHPMailer();
+
+        /*
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+        $mail->isSMTP();                                            // Send using SMTP
+        $mail->Host       = 'juandb182@gmail.com';                    // Set the SMTP server to send through
+        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+        $mail->Username   = 'juandb182@gmail.com';                     // SMTP username
+        $mail->Password   = 'juan andres';                               // SMTP password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+        $mail->Port       = 3305;
+
+        $mail->FromName = 'HelpCamp';
+        $mail->Subject = 'Reservacion';
+        $mail->Body = 'Gracias por reservar con nosotros';
+        $mail->AddAddress(serialize('fernandoujap@gmail.com'));
+
+// definiendo el adjunto
+        $mail->AddStringAttachment($pdf, 'servicio.pdf', 'base64', 'application/pdf');
+// enviando
+        $mail->Send();
+*/
+    $mail->IsHTML(true);
+    $mail->IsSMTP();
+    $mail->SMTPAuth = true;
+    $mail->SMTPSecure = 'tls';
+    $mail->Host = "smtp.gmail.com";
+    $mail->Port = 587;
+    $mail->Username = 'jose.mom.1304@gmail.com';
+    $mail->Password = '26681153';
+    $mail->setFrom('jose.mom.1304@gmail.com');
+    $mail->Subject = 'Nueva Reservacion';
+    $mail->Body = 'My Body & My Description';
+    $mail->AddAddress($user->email);
+    $mail->AddAttachment('C:\xampp\htdocs\SistemaDeInfo2\public\servicioPDF/' . $route, $name = 'servicio',  $encoding = 'base64', $type = 'application/pdf');
+
+    //$mail->addAttachment($pdf,'solicitud.pdf');
+    //$mail->AddAttachment('servicioPDF', $name = 'servicio.pdf',  $encoding = 'base64', $type = 'application/pdf');
+    $mail->send();
+
+
+
+
+    return redirect('../../reservaciones');
+        //return redirect()->route('servicio.index');
+
+
+
+
+
+
+        #$servicio->delete();
+        #redirect()->route('servicio.index');
+        //return $pdf->stream('servicio.pdf');
+
+        #return redirect()->route('servicio.index');
+
+
+        #$this->pdf($slug,$pdf);
+
+
+     }
+
+
+
+
+
+
+
+
     public function index(Request $request)
     {
       //$request->user()->authorizeRoles('admin');
@@ -75,6 +188,9 @@ class HelpCampController extends Controller
      */
     public function show(Request $request,Servicio $servicio)
     {
+        if(!Auth::check()) {
+            return redirect('../login');
+        }
         if ($request->user()->authorizeRoles('admin')) {
             return view('servicio.showd',compact('servicio'));
 

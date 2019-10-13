@@ -2,10 +2,20 @@
 
 @section('content')
 
+<div style="padding-top: 100px"></div>
+
+@if (Auth::check() && Auth::user()->authorizeRoles('admin'))
+
+<div class="container-fluid">
+        <div class="text-center"><a class="btn btn-md btn-info btn-block mb-1" href="../verUser" style="color:white;">Lista de usuarios</a>
+        <div class="text-center"><a class="btn btn-md btn-success btn-block" href="servicio/create">Crear un servicio</a>
+        </div>
 
 
-<div class="container">
+@endif
+
     <div class="row">
+
 
 
 
