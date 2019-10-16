@@ -51,5 +51,9 @@ Route::get('/reservaciones', function() {
 	}
 });
 
+Route::get("/noactivo", function() {
+    return view('noactivo');
+});
+
 
 

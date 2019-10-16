@@ -15,7 +15,7 @@
         <div class="card mb-3" style="max-width: 800px;">
             <div class="row no-gutters">
               <div class="col-md-6">
-                <img src="../img/{{$servicio->imagen}}" class="card-img" alt="...">
+                <img src="../img/{{$servicio->imagen}}" style="height:350px;width:350px;" class="card-img" alt="...">
               </div>
               <div class="col-md-6">
                 <div class="card-body">

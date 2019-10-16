@@ -25,11 +25,11 @@ class FilesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(user_id,route)
+    public function store(user_id $user_id,$route)
     {
-        
 
-        
+
+
         return File::create([
             'route' => $route,
             'user_id' => $user_id,
@@ -44,7 +44,7 @@ class FilesController extends Controller
      */
     public function show($id)
     {
-        
+
     }
 
     public function ownFiles($id)
@@ -61,7 +61,7 @@ class FilesController extends Controller
               'Content-Type: application/pdf',
             );
 
-        return response()->download($fullPath, $name . ".pdf", $headers); 
+        return response()->download($fullPath, $name . ".pdf", $headers);
     }
 
     /**

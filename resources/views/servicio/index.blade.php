@@ -7,8 +7,7 @@
 @if (Auth::check() && Auth::user()->authorizeRoles('admin'))
 
 <div class="container-fluid">
-        <div class="text-center"><a class="btn btn-md btn-info btn-block mb-1" href="../verUser" style="color:white;">Lista de usuarios</a>
-        <div class="text-center"><a class="btn btn-md btn-success btn-block" href="servicio/create">Crear un servicio</a>
+        <div class="text-center"><a class="btn btn-md btn-info btn-block mb-1" href="../public/verUser" style="color:white;">Lista de usuarios</a>
         </div>
 
 
@@ -24,7 +23,7 @@
 
 <div class="col-md-4 p-5">
 <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="img/{{$service->imagen}}" alt="Card image cap">
+        <img class="card-img-top" src="img/{{$service->imagen}}" style="height:250px;width:285px;" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">{{$service->name}}</h5>
           <p class="card-text">{{$service->descripcion}}</p>
@@ -35,6 +34,8 @@
           <li class="list-group-item">Precio:  {{$service->precio}}$</li>
         </ul>
         <div class="card-body text-center">
+
+
           <a href="servicio/{{$service->slug}}" class="btn btn-success">Ver mas</a>
         </div>
       </div>

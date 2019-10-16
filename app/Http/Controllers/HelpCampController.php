@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Servicio as Servicio;
 use App\User;
 use Illuminate\Http\Request;
@@ -53,7 +52,7 @@ class HelpCampController extends Controller
 
         $servicio = Servicio::find($ser->id);
 
-        $servicio->delete();
+
 
 
         $mail = new PHPMailer();
@@ -84,40 +83,36 @@ class HelpCampController extends Controller
     $mail->SMTPSecure = 'tls';
     $mail->Host = "smtp.gmail.com";
     $mail->Port = 587;
-    $mail->Username = 'jose.mom.1304@gmail.com';
-    $mail->Password = '26681153';
-    $mail->setFrom('jose.mom.1304@gmail.com');
+    $mail->Username = 'fernandoujap@gmail.com';
+    $mail->Password = 'fernand02695';
+    $mail->setFrom('fernandoujap@gmail.com');
     $mail->Subject = 'Nueva Reservacion';
-    $mail->Body = 'My Body & My Description';
+    $mail->Body = 'Gracias por elejirnos a nosotros';
     $mail->AddAddress($user->email);
-    $mail->AddAttachment('C:\xampp\htdocs\SistemaDeInfo2\public\servicioPDF/' . $route, $name = 'servicio',  $encoding = 'base64', $type = 'application/pdf');
+    $mail->AddAttachment('C:\laragon\www\HelpCampMaster\public\servicioPDF/' . $route, $name = 'servicio',  $encoding = 'base64', $type = 'application/pdf');
 
     //$mail->addAttachment($pdf,'solicitud.pdf');
     //$mail->AddAttachment('servicioPDF', $name = 'servicio.pdf',  $encoding = 'base64', $type = 'application/pdf');
     $mail->send();
 
 
+    $servicio->delete();
 
 
-    return redirect('../../reservaciones');
-        //return redirect()->route('servicio.index');
-
-
-
+    return redirect()->route('servicio.index');
+    //return response()->json($mail);
 
 
 
-        #$servicio->delete();
-        #redirect()->route('servicio.index');
-        //return $pdf->stream('servicio.pdf');
-
-        #return redirect()->route('servicio.index');
-
-
-        #$this->pdf($slug,$pdf);
 
 
      }
+
+     public function ver(Request $request)
+    {
+        $user = User::all();
+        return view('servicio.verUser',compact('user'));
+    }
 
 
 
@@ -189,7 +184,10 @@ class HelpCampController extends Controller
     public function show(Request $request,Servicio $servicio)
     {
         if(!Auth::check()) {
-            return redirect('../login');
+            return redirect('./login');
+        }
+        if(Auth::user()->activo == 0) {
+            return redirect("./noactivo");
         }
         if ($request->user()->authorizeRoles('admin')) {
             return view('servicio.showd',compact('servicio'));
@@ -241,6 +239,7 @@ class HelpCampController extends Controller
 
     }
         $servicio->save();
+        return redirect()->route('servicio.index');
         //en este caso si no se coloca el parametro dara un erro
         //enviarle un objeto el cual ahorita es trainer
         //session data
