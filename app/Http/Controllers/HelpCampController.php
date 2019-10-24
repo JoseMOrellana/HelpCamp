@@ -60,10 +60,10 @@ class HelpCampController extends Controller
         /*
         $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
         $mail->isSMTP();                                            // Send using SMTP
-        $mail->Host       = 'juandb182@gmail.com';                    // Set the SMTP server to send through
+        $mail->Host       = 'smt.gmail.com';                    // Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-        $mail->Username   = 'juandb182@gmail.com';                     // SMTP username
-        $mail->Password   = 'juan andres';                               // SMTP password
+        $mail->Username   = '';                     // Email de donde se va enviar
+        $mail->Password   = '';                     //Contraseña del email donde se va a enviar          // SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
         $mail->Port       = 3305;
 
